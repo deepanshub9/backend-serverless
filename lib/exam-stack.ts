@@ -13,7 +13,7 @@ export class ExamStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    
+  
     const table = new dynamodb.Table(this, "CinemasTable", {
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       partitionKey: { name: "cinemaId", type: dynamodb.AttributeType.NUMBER },
@@ -40,7 +40,7 @@ export class ExamStack extends cdk.Stack {
       },
     });
 
-   
+  
     table.grantReadData(getCinemaMoviesFn);
 
     new custom.AwsCustomResource(this, "moviesddbInitData", {
@@ -59,7 +59,7 @@ export class ExamStack extends cdk.Stack {
       }),
     });
 
-   
+
     const api = new apig.RestApi(this, "ExamAPI", {
       description: "Exam API",
       deployOptions: { stageName: "dev" },
@@ -71,7 +71,7 @@ export class ExamStack extends cdk.Stack {
       },
     });
 
-  
+
     const cinemasResource = api.root.addResource("cinemas");
     const cinemaIdResource = cinemasResource.addResource("{cinemaId}");
     const moviesResource = cinemaIdResource.addResource("movies");
